@@ -1,6 +1,7 @@
 import {Stack, StackProps} from "aws-cdk-lib";
 import {Construct} from "constructs";
 import {CodePipeline, CodeBuildStep, CodePipelineSource} from "aws-cdk-lib/pipelines";
+import { CdkPipelineStage } from "./cdk-pipeline-stage";
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 
 export class CdkPipelineStack extends Stack {
@@ -24,6 +25,9 @@ export class CdkPipelineStack extends Stack {
         commands: ['yarn install --frozen-lockfile', 'yarn build', 'yarn cdk synth']
       })
     })
+
+     const deploy = new CdkPipelineStage(this, 'Deploy');
+     const deployStage = pipeline.addStage(deploy);
 
   }
 }
